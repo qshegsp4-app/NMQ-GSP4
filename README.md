@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
@@ -14,3 +15,7 @@ The React Compiler is not enabled on this template because of its impact on dev 
 ## Expanding the ESLint configuration
 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+=======
+# NMQ-GSP4
+แบบประเมินนี้ใช้สำรวจความเจ็บปวดหรือไม่สบายตัวของระบบกล้ามเนื้อและกระดูก ที่เกิดจากการทำงานใน 3 เดือนที่ผ่านมา ของพนักงานโรงแยกก๊าซฯ ขนอม
+>>>>>>> 55be5353d1f9192a62c3aa865329103d7c70ee5d
