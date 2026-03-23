@@ -388,7 +388,7 @@ export default function BodyMapAssessment() {
                 style={{...inputStyle,borderColor:isError("shift",info.shift)?"#fca5a5":"#e2e8f0"}}>
                 <option value="">-- เลือกช่วงเวลาทำงาน --</option>
                 <option value="ปกติ">ปกติ (08.00 - 17.00 น.)</option>
-                <option value="กะ">กะ (08.00 - 20.00 น. และ 20.00 - 08.00 น.)</option>
+                <option value="กะ">เข้ากะ (08.00 - 20.00 น. และ 20.00 - 08.00 น.)</option>
               </select></div>
             <div><label style={labelStyle}>อายุการทำงาน (ปี) <span style={{color:"#ef4444"}}>*</span></label>
               <input type="number" min="0" max="60" value={info.workAge} placeholder="เช่น 5"
