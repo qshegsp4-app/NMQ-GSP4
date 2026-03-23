@@ -40,7 +40,7 @@ const numPositions = {
 };
 
 const scaleColors = { 0:"#e2e8f0", 2:"#fef08a", 3:"#fb923c", 4:"#ef4444" };
-const scaleLabels = { 0:"ไม่รู้สึก", 2:"น้อย", 3:"ปานกลาง", 4:"มาก" };
+const scaleLabels = { 0:"ไม่มีอาการ", 2:"เจ็บปวดน้อย", 3:"เจ็บปวดปานกลาง", 4:"เจ็บปวดมาก" };
 
 const divisionOptions = {
   "ผจก.ฝ่าย": [
@@ -48,21 +48,21 @@ const divisionOptions = {
   ],
   "วบ.": [
     { value: "ผจ.วบ.",                         label: "ผู้จัดการส่วนวิศวกรรมบำรุงรักษาฯ (วบ.)" },
-    { value: "ผจก.แผนกไฟฟ้าและระบบควบคุม",           label: "ผู้จัดการแผนกบำรุงรักษาไฟฟ้าและระบบควบคุม" },
-    { value: "วิศวกรระบบควบคุม",                      label: "วิศวกรระบบควบคุม" },
-    { value: "วิศวกรไฟฟ้า",                           label: "วิศวกรไฟฟ้า" },
-    { value: "ช่างเทคนิคไฟฟ้าและผู้ช่วย",             label: "ช่างเทคนิคไฟฟ้าและผู้ช่วย" },
-    { value: "ช่างเทคนิคระบบและผู้ช่วย",              label: "ช่างเทคนิคระบบควบคุมและผู้ช่วย" },
-    { value: "ผจก.แผนกเครื่องกล",                     label: "ผู้จัดการแผนกเครื่องกล" },
-    { value: "วิศวกรเครื่องกล Rotating",              label: "วิศวกรเครื่องกล Rotating" },
-    { value: "วิศวกรเครื่องกล Stationary",            label: "วิศวกรเครื่องกล Stationary" },
+    { value: "ผจก.แผนกไฟฟ้าและระบบควบคุม",      label: "ผู้จัดการแผนกบำรุงรักษาไฟฟ้าและระบบควบคุม" },
+    { value: "วิศวกรระบบควบคุม",                 label: "วิศวกรระบบควบคุม" },
+    { value: "วิศวกรไฟฟ้า",                      label: "วิศวกรไฟฟ้า" },
+    { value: "ช่างเทคนิคไฟฟ้าและผู้ช่วย",           label: "ช่างเทคนิคไฟฟ้าและผู้ช่วย" },
+    { value: "ช่างเทคนิคระบบและผู้ช่วย",            label: "ช่างเทคนิคระบบควบคุมและผู้ช่วย" },
+    { value: "ผจก.แผนกเครื่องกล",                label: "ผู้จัดการแผนกเครื่องกล" },
+    { value: "วิศวกรเครื่องกล Rotating",           label: "วิศวกรเครื่องกล Rotating" },
+    { value: "วิศวกรเครื่องกล Stationary",          label: "วิศวกรเครื่องกล Stationary" },
     { value: "ช่างเทคนิค Rotating และผู้ช่วย",        label: "ช่างเทคนิค Rotating และผู้ช่วย" },
     { value: "ช่างเทคนิค Stationary และผู้ช่วย",      label: "ช่างเทคนิค Stationary และผู้ช่วย" },
-    { value: "ผจก.แผนกบริหารวิศวกรรมฯ",              label: "ผู้จัดการแผนกบริหารวิศวกรรมและเทคนิค" },
+    { value: "ผจก.แผนกบริหารวิศวกรรมฯ",            label: "ผู้จัดการแผนกบริหารวิศวกรรมและเทคนิค" },
     { value: "วิศวกรกระบวนการผลิต/Lab และผู้ช่วย",    label: "วิศวกรกระบวนการผลิต/Lab และผู้ช่วย" },
     { value: "วิศวกรตรวจสอบโรงงานและผู้ช่วย",         label: "วิศวกรตรวจสอบโรงงานและผู้ช่วย" },
     { value: "วิศวกรโครงการและผู้ช่วย",               label: "วิศวกรโครงการและผู้ช่วย" },
-    { value: "พนักงานวิเคราะห์และวางแผน และผู้ช่วย",  label: "พนักงานวิเคราะห์และวางแผน และผู้ช่วย" },
+    { value: "พนักงานวิเคราะห์และวางแผน และผู้ช่วย",   label: "พนักงานวิเคราะห์และวางแผน และผู้ช่วย" },
     { value: "พนักงานพัสดุและผู้ช่วย",                label: "พนักงานพัสดุและผู้ช่วย" },
   ],
   "ปน.": [
@@ -86,10 +86,16 @@ const divisionOptions = {
   ],
 };
 
+function getNowDatetime() {
+  const now = new Date();
+  const pad = (n) => String(n).padStart(2,"0");
+  return `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}`;
+}
+
 const initialInfo = {
   name: "", age: "", job: "", division: "",
-  date: new Date().toISOString().split("T")[0],
-  assessor: "", shift: "", gender: "", workAge: ""
+  date: getNowDatetime(),
+  shift: "", gender: "", workAge: ""
 };
 const initialScores = Object.fromEntries(bodyParts.map(p => [p.id, 0]));
 
@@ -100,7 +106,6 @@ function getRiskColor(score) {
   return "#ef4444";
 }
 
-// ✅ เพิ่ม: ฟังก์ชันแปลงคะแนนเป็นข้อความระดับความเสี่ยง
 function getRiskLabel(score) {
   if (score <= 49) return "(ความเสี่ยงน้อย)";
   if (score <= 70) return "(ความเสี่ยงปานกลาง)";
@@ -242,11 +247,11 @@ export default function BodyMapAssessment() {
   const rightTotal  = rightParts.reduce((a,p)=>a+scores[p.id],0);
   const centerTotal = centerParts.reduce((a,p)=>a+scores[p.id],0);
   const riskColor   = getRiskColor(totalScore);
-  const riskLabel   = getRiskLabel(totalScore); // ✅ เพิ่ม
+  const riskLabel   = getRiskLabel(totalScore);
 
-  const canGoToForm = info.name.trim()!==""&&info.job!==""&&info.age.trim()!==""&&info.shift!==""&&info.workAge!=="";
+  const canGoToForm = info.name.trim()!==""&&info.job!==""&&info.age!==""&&info.shift!==""&&info.workAge!=="";
   const formValidationMsg = !info.name.trim()?"กรุณากรอกชื่อผู้ถูกประเมิน"
-    :!info.age.trim()?"กรุณากรอกอายุ":!info.job?"กรุณาเลือกส่วนงาน"
+    :!info.age?"กรุณาเลือกช่วงอายุ":!info.job?"กรุณาเลือกส่วนงาน"
     :!info.shift?"กรุณาเลือกช่วงเวลาทำงาน":!info.workAge?"กรุณากรอกอายุการทำงาน":"";
   const canProceed = fatigue!==null;
 
@@ -256,13 +261,13 @@ export default function BodyMapAssessment() {
   };
   const handleReset = () => {
     setPage("home"); setScores(initialScores); setSelected(null); setFatigue(null);
-    setPainArea(""); setInfo(initialInfo); setTouched({}); setPdpaConsent(false);
+    setPainArea(""); setInfo({...initialInfo, date: getNowDatetime()}); setTouched({}); setPdpaConsent(false);
   };
 
   async function saveToGoogleSheet() {
     if (isSaving) return; setIsSaving(true);
     const payload = { date:info.date, name:info.name, age:info.age, job:info.job, division:info.division,
-      shift:info.shift, gender:info.gender, work_age:info.workAge, assessor:info.assessor, fatigue,
+      shift:info.shift, gender:info.gender, work_age:info.workAge, fatigue,
       pain_area:painArea, total_score:totalScore, left_total:leftTotal, center_total:centerTotal,
       right_total:rightTotal, affected_count:affected,
       body_scores:bodyParts.map(p=>({body_part_id:p.id,body_part_label:p.label,side:p.side,score:scores[p.id]})) };
@@ -270,7 +275,7 @@ export default function BodyMapAssessment() {
     const timeoutId = setTimeout(()=>controller.abort(),30000);
     try {
       await fetch(APPS_SCRIPT_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload),signal:controller.signal});
-      clearTimeout(timeoutId); alert("✅ ข้อมูลถูกบันทึกเรียบร้อย");
+      clearTimeout(timeoutId); alert("✅ ข้อมูลถูกบันทึกเรียบร้อย ขอความร่วมมือช่วยทำแบบประเมินความพึงพอใจ https://forms.gle/GVfA3pjsWYzMrmP37");
     } catch(err) {
       clearTimeout(timeoutId);
       if (err.name==="AbortError") alert("⏱️ กำลังตรวจสอบ"); else alert("❌ เกิดข้อผิดพลาด: "+err.message);
@@ -283,7 +288,7 @@ export default function BodyMapAssessment() {
       <div style={{background:"linear-gradient(135deg,#1e3a5f,#0369a1)",color:"white",padding:"32px 24px",textAlign:"center"}}>
         <div style={{fontSize:52,marginBottom:8}}>💪🏻🦴</div>
         <div style={{fontWeight:900,fontSize:22,marginBottom:4}}>Nordic Musculoskeletal Questionnaire</div>
-        <div style={{fontSize:14,opacity:0.8}}>แบบประเมินความผิดปกติของระบบกล้ามเนื้อและกระดูก</div>
+        <div style={{fontSize:14,opacity:0.8}}>แบบประเมินความเจ็บปวดของระบบกล้ามเนื้อและกระดูก</div>
         <div style={{display:"inline-block",marginTop:10,background:"rgba(255,255,255,0.15)",borderRadius:20,padding:"4px 14px",fontSize:12}}>Ergonomic Assessment · GSP4</div>
       </div>
       <div style={{padding:"24px 20px"}}>
@@ -293,16 +298,42 @@ export default function BodyMapAssessment() {
         </div>
         <div style={{marginBottom:20}}>
           <div style={{fontWeight:700,color:"#1e3a5f",fontSize:14,marginBottom:12}}>🗂️ ขั้นตอนการประเมิน</div>
-          {[["1","#3b82f6","ตอบแบบสอบถามเบื้องต้น","ข้อมูลทั่วไปและแบบสำรวจความเหนื่อยล้าในการทำงาน"],
-            ["2","#8b5cf6","ประเมิน NMQ","ระบุระดับความเจ็บปวดในแต่ละส่วนของร่างกาย"],
-            ["3","#0369a1","ดูผลการประเมิน","สรุปคะแนนและแปลผลความเสี่ยง"]].map(([n,c,t,d])=>(
+          {[["1","#3b82f6","ตอบแบบสอบถามเบื้องต้น","ข้อมูลทั่วไปและแบบสำรวจความเมื่อยล้าทางร่างกายจากการทำงาน"],
+            ["2","#f1861b","ประเมิน NMQ","ระบุระดับความเจ็บปวดในแต่ละส่วนของร่างกาย"],
+            ["3","#0369a1","ดูผลการประเมิน","สรุปคะแนนและแปลผลความเสี่ยง"],
+            ["4","#8b5cf6","ดูคำแนะนำเพื่อสุขภาพ","ดูคำแนะนำเพื่อเฝ้าระวังสุขภาพ และเพื่อเป็นแนวทางในการปรับเปลี่ยนพฤติกรรม"],
+            ["5","#16a34a","บันทึกผล และประเมินความพึงพอใจ","กดบันทึกผลเพื่อส่งข้อมูล และทำแบบประเมินความพึงพอใจในการใช้งานแอปพลิเคชันนี้"]
+          ].map(([n,c,t,d])=>(
             <div key={n} style={{display:"flex",alignItems:"center",gap:12,padding:"10px 12px",marginBottom:8,background:"white",borderRadius:10,border:`1.5px solid ${c}33`}}>
               <div style={{width:32,height:32,borderRadius:"50%",background:c,color:"white",display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:14,flexShrink:0}}>{n}</div>
               <div><div style={{fontWeight:700,fontSize:13,color:"#1e293b"}}>{t}</div><div style={{fontSize:11,color:"#94a3b8"}}>{d}</div></div>
             </div>
           ))}
         </div>
-        <button onClick={()=>setPage("pre")} style={{width:"100%",padding:16,background:"linear-gradient(135deg,#1e3a5f,#0369a1)",color:"white",border:"none",borderRadius:14,fontWeight:800,fontSize:16,cursor:"pointer",boxShadow:"0 4px 16px rgba(3,105,161,0.4)"}}>🚀 เริ่มการประเมิน</button>
+
+        {/* ===== PDPA SECTION (ย้ายมาไว้หน้าแรก) ===== */}
+        <div style={{marginBottom:20,padding:"14px 16px",background:pdpaConsent?"#f0fdf4":"#fafafa",border:`2px solid ${pdpaConsent?"#86efac":"#e2e8f0"}`,borderRadius:14,transition:"all 0.2s"}}>
+          <div style={{fontSize:12,fontWeight:700,color:"#1e3a5f",marginBottom:8}}>🔒 การยินยอมเก็บข้อมูลส่วนบุคคล (PDPA)</div>
+          <p style={{fontSize:12,color:"#475569",lineHeight:1.7,margin:"0 0 10px 0"}}>ข้อมูลที่คุณกรอกในแบบสอบถามนี้จะถูกจัดเก็บและใช้เพื่อ<strong> วิเคราะห์ความเหนื่อยล้าจากการทำงาน</strong> เท่านั้น และจะไม่ถูกเปิดเผยต่อบุคคลภายนอกโดยไม่ได้รับความยินยอม ตาม พ.ร.บ. คุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562</p>
+          <div onClick={()=>setPdpaConsent(v=>!v)} style={{display:"flex",alignItems:"flex-start",gap:10,cursor:"pointer"}}>
+            <div style={{marginTop:2,width:18,height:18,minWidth:18,border:`2px solid ${pdpaConsent?"#16a34a":"#94a3b8"}`,borderRadius:4,background:pdpaConsent?"#16a34a":"#fff",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,transition:"all 0.15s"}}>
+              {pdpaConsent&&<svg width="10" height="10" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+            </div>
+            <span style={{fontSize:12.5,color:"#334155",lineHeight:1.6,userSelect:"none"}}>ข้าพเจ้าได้อ่านและ<strong>ยินยอมให้จัดเก็บข้อมูลส่วนบุคคล</strong>เพื่อวัตถุประสงค์ในการประเมินความเหนื่อยล้าจากการทำงานตามที่ระบุไว้ข้างต้น</span>
+          </div>
+        </div>
+
+        <button
+          onClick={() => { if (pdpaConsent) setPage("pre"); }}
+          style={{width:"100%",padding:16,
+            background:pdpaConsent?"linear-gradient(135deg,#1e3a5f,#0369a1)":"#e2e8f0",
+            color:pdpaConsent?"white":"#94a3b8",
+            border:"none",borderRadius:14,fontWeight:800,fontSize:16,
+            cursor:pdpaConsent?"pointer":"not-allowed",
+            boxShadow:pdpaConsent?"0 4px 16px rgba(3,105,161,0.4)":"none",
+            transition:"all 0.2s"}}>
+          {pdpaConsent ? "🚀 เริ่มการประเมิน" : "🔒 กรุณายินยอม PDPA ก่อนเริ่ม"}
+        </button>
       </div>
     </div>
     <p style={{textAlign:"center",color:"#94a3b8",fontSize:11,marginTop:12}}>อ้างอิง: Kuorinka et al., Applied Ergonomics 18(3), 1987</p>
@@ -315,10 +346,9 @@ export default function BodyMapAssessment() {
       <div style={{background:"linear-gradient(135deg,#1e3a5f,#0369a1)",color:"white",padding:"16px 20px",display:"flex",alignItems:"center",gap:12}}>
         <button onClick={()=>setPage("home")} style={{background:"rgba(255,255,255,0.2)",border:"none",color:"white",borderRadius:8,padding:"5px 12px",cursor:"pointer",fontSize:13}}>←</button>
         <div style={{flex:1}}><div style={{fontWeight:900,fontSize:17}}>แบบสอบถามความเหนื่อยล้าจากการทำงานเบื้องต้น</div><div style={{fontSize:12,opacity:0.8}}>กรุณาตอบก่อนเริ่มการประเมิน</div></div>
-        <div style={{display:"flex",alignItems:"center",gap:6}}>
-          <div style={{width:10,height:10,borderRadius:"50%",background:"white"}}/><div style={{width:24,height:2,background:"rgba(255,255,255,0.4)"}}/>
-          <div style={{width:10,height:10,borderRadius:"50%",background:"rgba(255,255,255,0.35)"}}/><div style={{width:24,height:2,background:"rgba(255,255,255,0.4)"}}/>
-          <div style={{width:10,height:10,borderRadius:"50%",background:"rgba(255,255,255,0.35)"}}/>
+        <div style={{textAlign:"right",flexShrink:0}}>
+          <div style={{fontSize:11,opacity:0.7}}>วันที่/เวลา</div>
+          <div style={{fontSize:12,fontWeight:700}}>{info.date}</div>
         </div>
       </div>
       <div style={{padding:20}}>
@@ -328,9 +358,14 @@ export default function BodyMapAssessment() {
             <div><label style={labelStyle}>ชื่อผู้ถูกประเมิน <span style={{color:"#ef4444"}}>*</span></label>
               <input type="text" value={info.name} onChange={e=>setInfo(p=>({...p,name:e.target.value}))} onBlur={()=>handleBlur("name")}
                 style={{...inputStyle,borderColor:isError("name",info.name.trim())?"#fca5a5":"#e2e8f0"}}/></div>
-            <div><label style={labelStyle}>อายุ (ปี) <span style={{color:"#ef4444"}}>*</span></label>
-              <input type="text" value={info.age} onChange={e=>setInfo(p=>({...p,age:e.target.value}))} onBlur={()=>handleBlur("age")}
-                style={{...inputStyle,borderColor:isError("age",info.age.trim())?"#fca5a5":"#e2e8f0"}}/></div>
+            <div><label style={labelStyle}>ช่วงอายุ <span style={{color:"#ef4444"}}>*</span></label>
+              <select value={info.age} onChange={e=>setInfo(p=>({...p,age:e.target.value}))} onBlur={()=>handleBlur("age")}
+                style={{...inputStyle,borderColor:isError("age",info.age)?"#fca5a5":"#e2e8f0"}}>
+                <option value="">-- เลือกช่วงอายุ --</option>
+                <option value="น้อยกว่า 35 ปี">น้อยกว่า 35 ปี</option>
+                <option value="35–50 ปี">35–50 ปี</option>
+                <option value="50 ปีขึ้นไป">50 ปีขึ้นไป</option>
+              </select></div>
             <div><label style={labelStyle}>ส่วนงาน <span style={{color:"#ef4444"}}>*</span></label>
               <select value={info.job} onBlur={()=>handleBlur("job")}
                 onChange={e=>{const job=e.target.value;const opts=divisionOptions[job]||[];setInfo(p=>({...p,job,division:opts.length===1?opts[0].value:""}));}}
@@ -355,7 +390,11 @@ export default function BodyMapAssessment() {
                 <option value="ปกติ">ปกติ (08.00 - 17.00 น.)</option>
                 <option value="กะ">กะ (08.00 - 20.00 น. และ 20.00 - 08.00 น.)</option>
               </select></div>
-            <div><label style={labelStyle}>เพศ <span style={{color:"#ef4444"}}>*</span></label>
+            <div><label style={labelStyle}>อายุการทำงาน (ปี) <span style={{color:"#ef4444"}}>*</span></label>
+              <input type="number" min="0" max="60" value={info.workAge} placeholder="เช่น 5"
+                onChange={e=>setInfo(p=>({...p,workAge:e.target.value}))} onBlur={()=>handleBlur("workAge")}
+                style={{...inputStyle,borderColor:isError("workAge",info.workAge)?"#fca5a5":"#e2e8f0"}}/></div>
+            <div style={{gridColumn:"1 / -1"}}><label style={labelStyle}>เพศ <span style={{color:"#ef4444"}}>*</span></label>
               <div style={{display:"flex",gap:6}}>
                 {["ชาย","หญิง"].map(g=>(
                   <button key={g} type="button" onClick={()=>setInfo(p=>({...p,gender:p.gender===g?"":g}))}
@@ -367,14 +406,6 @@ export default function BodyMapAssessment() {
                   </button>
                 ))}
               </div></div>
-            <div><label style={labelStyle}>อายุการทำงาน (ปี) <span style={{color:"#ef4444"}}>*</span></label>
-              <input type="number" min="0" max="60" value={info.workAge} placeholder="เช่น 5"
-                onChange={e=>setInfo(p=>({...p,workAge:e.target.value}))} onBlur={()=>handleBlur("workAge")}
-                style={{...inputStyle,borderColor:isError("workAge",info.workAge)?"#fca5a5":"#e2e8f0"}}/></div>
-            <div><label style={labelStyle}>วันที่</label>
-              <input type="date" value={info.date} onChange={e=>setInfo(p=>({...p,date:e.target.value}))} style={inputStyle}/></div>
-            <div style={{gridColumn:"1 / -1"}}><label style={labelStyle}>ผู้ประเมิน</label>
-              <input type="text" value={info.assessor} onChange={e=>setInfo(p=>({...p,assessor:e.target.value}))} style={inputStyle}/></div>
           </div>
           {formValidationMsg&&Object.keys(touched).length>0&&(
             <div style={{marginTop:10,padding:"8px 12px",background:"#fee2e2",border:"1px solid #fca5a5",borderRadius:8,fontSize:12,color:"#dc2626",fontWeight:600}}>⚠️ {formValidationMsg}</div>
@@ -385,7 +416,7 @@ export default function BodyMapAssessment() {
           <div style={{display:"flex",alignItems:"flex-start",gap:10,marginBottom:14}}>
             <div style={{background:"#1e3a5f",color:"white",borderRadius:"50%",width:24,height:24,minWidth:24,display:"flex",alignItems:"center",justifyContent:"center",fontSize:12,fontWeight:800}}>1</div>
             <div style={{fontSize:14,fontWeight:700,color:"#1e293b",lineHeight:1.5}}>
-              งานที่คุณกำลังทำอยู่นี้ <span style={{color:"#0369a1"}}>สร้างความเหนื่อยล้า</span> ให้คุณหรือไม่?
+              งานที่คุณกำลังทำอยู่นี้ <span style={{color:"#0369a1"}}>สร้างความเหนื่อยล้าทางร่างกาย</span> ให้คุณหรือไม่?
               <span style={{display:"block",fontSize:11,fontWeight:500,color:"#94a3b8",marginTop:2}}>* จำเป็นต้องตอบ</span>
             </div>
           </div>
@@ -413,24 +444,11 @@ export default function BodyMapAssessment() {
             {painArea&&<div style={{fontSize:11,color:"#ea580c",marginTop:4,fontWeight:600}}>✏️ บันทึกแล้ว: {painArea.length} ตัวอักษร</div>}
           </div>
         </div>
-        <div style={{marginBottom:16,padding:"14px 16px",background:pdpaConsent?"#f0fdf4":"#fafafa",border:`2px solid ${pdpaConsent?"#86efac":"#e2e8f0"}`,borderRadius:14,transition:"all 0.2s"}}>
-          <div style={{fontSize:12,fontWeight:700,color:"#1e3a5f",marginBottom:8}}>🔒 การยินยอมเก็บข้อมูลส่วนบุคคล (PDPA)</div>
-          <p style={{fontSize:12,color:"#475569",lineHeight:1.7,margin:"0 0 10px 0"}}>ข้อมูลที่คุณกรอกในแบบสอบถามนี้จะถูกจัดเก็บและใช้เพื่อ<strong> วิเคราะห์ความเหนื่อยล้าจากการทำงาน</strong> เท่านั้น และจะไม่ถูกเปิดเผยต่อบุคคลภายนอกโดยไม่ได้รับความยินยอม ตาม พ.ร.บ. คุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562</p>
-          <div onClick={()=>setPdpaConsent(v=>!v)} style={{display:"flex",alignItems:"flex-start",gap:10,cursor:"pointer"}}>
-            <div style={{marginTop:2,width:18,height:18,minWidth:18,border:`2px solid ${pdpaConsent?"#16a34a":"#94a3b8"}`,borderRadius:4,background:pdpaConsent?"#16a34a":"#fff",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,transition:"all 0.15s"}}>
-              {pdpaConsent&&<svg width="10" height="10" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>}
-            </div>
-            <span style={{fontSize:12.5,color:"#334155",lineHeight:1.6,userSelect:"none"}}>ข้าพเจ้าได้อ่านและ<strong>ยินยอมให้จัดเก็บข้อมูลส่วนบุคคล</strong>เพื่อวัตถุประสงค์ในการประเมินความเหนื่อยล้าจากการทำงานตามที่ระบุไว้ข้างต้น</span>
-          </div>
-          {!pdpaConsent&&canProceed&&Object.keys(touched).length>0&&(
-            <div style={{marginTop:8,fontSize:11,color:"#dc2626",fontWeight:600,padding:"6px 10px",background:"#fee2e2",borderRadius:8}}>⚠️ กรุณายินยอม PDPA ก่อนเริ่มการประเมิน</div>
-          )}
-        </div>
         <button onClick={handleSubmitPre} style={{width:"100%",padding:14,
-          background:(canProceed&&canGoToForm&&pdpaConsent)?"linear-gradient(135deg,#1e3a5f,#0369a1)":"#e2e8f0",
-          color:(canProceed&&canGoToForm&&pdpaConsent)?"white":"#94a3b8",border:"none",borderRadius:12,fontWeight:700,fontSize:15,cursor:"pointer",transition:"all 0.2s",
-          boxShadow:(canProceed&&canGoToForm&&pdpaConsent)?"0 4px 14px rgba(3,105,161,0.35)":"none"}}>
-          {!canProceed?"กรุณาตอบข้อ 1 ก่อนดำเนินการต่อ":formValidationMsg?`⚠️ ${formValidationMsg}`:!pdpaConsent?"กรุณายินยอม PDPA ก่อนดำเนินการต่อ":"เริ่มประเมิน NMQ →"}
+          background:(canProceed&&canGoToForm)?"linear-gradient(135deg,#1e3a5f,#0369a1)":"#e2e8f0",
+          color:(canProceed&&canGoToForm)?"white":"#94a3b8",border:"none",borderRadius:12,fontWeight:700,fontSize:15,cursor:"pointer",transition:"all 0.2s",
+          boxShadow:(canProceed&&canGoToForm)?"0 4px 14px rgba(3,105,161,0.35)":"none"}}>
+          {!canProceed?"กรุณาตอบข้อ 1 ก่อนดำเนินการต่อ":formValidationMsg?`⚠️ ${formValidationMsg}`:"เริ่มประเมิน NMQ →"}
         </button>
       </div>
     </div>
@@ -442,7 +460,6 @@ export default function BodyMapAssessment() {
   if (page==="result") {
     const topParts = bodyParts.filter(p=>scores[p.id]>0).sort((a,b)=>scores[b.id]-scores[a.id]);
 
-    // ✅ Banner: นับจุดที่ปวดมาก (4) และปานกลาง (3)
     const highPainParts  = bodyParts.filter(p=>scores[p.id]===4);
     const medPainParts   = bodyParts.filter(p=>scores[p.id]===3);
     const showHighBanner = highPainParts.length>0 && totalScore<=49;
@@ -458,7 +475,7 @@ export default function BodyMapAssessment() {
           <div style={{background:"#f8fafc",borderRadius:12,padding:14,marginBottom:16,display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}>
             {[["ชื่อ",info.name||"-"],["อายุ",info.age||"-"],["ส่วนงาน",info.job||"-"],["ตำแหน่ง/แผนก",info.division||"-"],
               ["ช่วงเวลาทำงาน",info.shift||"-"],["เพศ",info.gender||"-"],["อายุงาน",info.workAge?`${info.workAge} ปี`:"-"],
-              ["วันที่",info.date],["ผู้ประเมิน",info.assessor||"-"]].map(([k,v])=>(
+              ["วันที่/เวลา",info.date]].map(([k,v])=>(
               <div key={k}><div style={{fontSize:11,color:"#64748b"}}>{k}</div><div style={{fontWeight:700,fontSize:13}}>{v}</div></div>
             ))}
           </div>
@@ -473,8 +490,6 @@ export default function BodyMapAssessment() {
               <div style={{fontSize:13,color:"#1e293b",fontWeight:500}}>{painArea||<span style={{color:"#94a3b8",fontStyle:"italic"}}>ไม่ได้ระบุ</span>}</div>
             </div>}
           </div>
-
-          {/* ✅ แก้ไข: เพิ่ม riskLabel ใต้คะแนนในหน้า Result */}
           <div style={{background:`${riskColor}18`,border:`3px solid ${riskColor}`,borderRadius:16,padding:20,textAlign:"center",marginBottom:16}}>
             <div style={{fontSize:12,color:"#64748b"}}>ความผิดปกติของระบบกล้ามเนื้อและกระดูก</div>
             <div style={{fontSize:60,fontWeight:900,color:riskColor,lineHeight:1.1}}>{totalScore}</div>
@@ -486,25 +501,14 @@ export default function BodyMapAssessment() {
               <span style={{fontSize:14,color:"#94a3b8"}}>/{bodyParts.length}</span>
             </div>
           </div>
-
-          {/* ✅ Banner แจ้งเตือนกรณีปวดมาก/ปานกลาง แต่คะแนนรวมยังน้อย */}
           {showHighBanner&&(
             <div style={{background:"#fff1f2",border:"2px solid #fda4af",borderRadius:12,padding:"12px 14px",marginBottom:16,display:"flex",gap:10,alignItems:"flex-start"}}>
               <div style={{fontSize:22,flexShrink:0}}>🚨</div>
               <div>
-                <div style={{fontWeight:800,fontSize:13,color:"#be123c",marginBottom:4}}>
-                  พบ {highPainParts.length} จุดที่มีอาการระดับ "มาก"
-                </div>
-                <div style={{fontSize:12,color:"#9f1239",lineHeight:1.7,marginBottom:6}}>
-                  แม้คะแนนรวมจะอยู่ในเกณฑ์ความเสี่ยงน้อย เนื่องจากจุดที่ไม่ปวดมีจำนวนมาก
-                  แต่ตำแหน่งที่มีอาการรุนแรง <strong>ควรได้รับการดูแลเพิ่มเติม</strong>
-                </div>
+                <div style={{fontWeight:800,fontSize:13,color:"#be123c",marginBottom:4}}>พบ {highPainParts.length} จุดที่มีอาการระดับ "มาก"</div>
+                <div style={{fontSize:12,color:"#9f1239",lineHeight:1.7,marginBottom:6}}>แม้คะแนนรวมจะอยู่ในเกณฑ์ความเสี่ยงน้อย เนื่องจากจุดที่ไม่ปวดมีจำนวนมาก แต่ตำแหน่งที่มีอาการรุนแรง <strong>ควรได้รับการดูแลเพิ่มเติม</strong></div>
                 <div style={{display:"flex",flexWrap:"wrap",gap:5}}>
-                  {highPainParts.map(p=>(
-                    <span key={p.id} style={{fontSize:11,fontWeight:700,padding:"2px 8px",borderRadius:6,background:"#fda4af",color:"#be123c"}}>
-                      #{p.id} {p.label}
-                    </span>
-                  ))}
+                  {highPainParts.map(p=>(<span key={p.id} style={{fontSize:11,fontWeight:700,padding:"2px 8px",borderRadius:6,background:"#fda4af",color:"#be123c"}}>#{p.id} {p.label}</span>))}
                 </div>
               </div>
             </div>
@@ -513,24 +517,14 @@ export default function BodyMapAssessment() {
             <div style={{background:"#fff7ed",border:"2px solid #fdba74",borderRadius:12,padding:"12px 14px",marginBottom:16,display:"flex",gap:10,alignItems:"flex-start"}}>
               <div style={{fontSize:22,flexShrink:0}}>⚠️</div>
               <div>
-                <div style={{fontWeight:800,fontSize:13,color:"#c2410c",marginBottom:4}}>
-                  พบ {medPainParts.length} จุดที่มีอาการระดับ "ปานกลาง"
-                </div>
-                <div style={{fontSize:12,color:"#9a3412",lineHeight:1.7,marginBottom:6}}>
-                  แม้คะแนนรวมจะอยู่ในเกณฑ์ความเสี่ยงน้อย ตำแหน่งเหล่านี้
-                  <strong> ควรติดตามอาการ</strong> และป้องกันก่อนที่จะรุนแรงขึ้น
-                </div>
+                <div style={{fontWeight:800,fontSize:13,color:"#c2410c",marginBottom:4}}>พบ {medPainParts.length} จุดที่มีอาการระดับ "ปานกลาง"</div>
+                <div style={{fontSize:12,color:"#9a3412",lineHeight:1.7,marginBottom:6}}>แม้คะแนนรวมจะอยู่ในเกณฑ์ความเสี่ยงน้อย ตำแหน่งเหล่านี้ <strong>ควรติดตามอาการ</strong> และป้องกันก่อนที่จะรุนแรงขึ้น</div>
                 <div style={{display:"flex",flexWrap:"wrap",gap:5}}>
-                  {medPainParts.map(p=>(
-                    <span key={p.id} style={{fontSize:11,fontWeight:700,padding:"2px 8px",borderRadius:6,background:"#fdba74",color:"#c2410c"}}>
-                      #{p.id} {p.label}
-                    </span>
-                  ))}
+                  {medPainParts.map(p=>(<span key={p.id} style={{fontSize:11,fontWeight:700,padding:"2px 8px",borderRadius:6,background:"#fdba74",color:"#c2410c"}}>#{p.id} {p.label}</span>))}
                 </div>
               </div>
             </div>
           )}
-
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10,marginBottom:16}}>
             {[["ซ้าย",leftTotal,leftParts.length*3,"#3b82f6"],["กลาง",centerTotal,centerParts.length*3,"#8b5cf6"],["ขวา",rightTotal,rightParts.length*3,"#ec4899"]].map(([l,v,m,c])=>(
               <div key={l} style={{background:"#f8fafc",borderRadius:12,padding:12,textAlign:"center",border:`2px solid ${c}33`}}>
@@ -656,14 +650,13 @@ export default function BodyMapAssessment() {
                 const bg=maxSc===4?"#fee2e2":maxSc===3?"#ffedd5":"#fefce8";
                 const lb=maxSc===4?"มาก":maxSc===3?"ปานกลาง":"น้อย";
                 return (
-                  <details key={k} style={{marginBottom:10}} open={activeGroups.length<=2}>
-                    <summary style={{display:"flex",alignItems:"center",gap:10,padding:"10px 14px",background:"white",border:"1.5px solid #e2e8f0",borderRadius:12,cursor:"pointer",listStyle:"none",userSelect:"none"}}>
+                  <div key={k} style={{marginBottom:10,border:"1.5px solid #e2e8f0",borderRadius:12,overflow:"hidden"}}>
+                    <div style={{display:"flex",alignItems:"center",gap:10,padding:"10px 14px",background:"white"}}>
                       <span style={{fontSize:20}}>{g.icon}</span>
                       <span style={{flex:1,fontWeight:700,fontSize:13,color:"#1e293b"}}>{g.title}</span>
                       <span style={{fontSize:11,fontWeight:700,padding:"3px 10px",borderRadius:6,background:bg,color:sc}}>{lb}</span>
-                      <span style={{fontSize:11,color:"#94a3b8"}}>▼</span>
-                    </summary>
-                    <div style={{padding:"12px 14px",background:"#fafcff",border:"1.5px solid #e2e8f0",borderTop:"none",borderRadius:"0 0 12px 12px"}}>
+                    </div>
+                    <div style={{padding:"12px 14px",background:"#fafcff",borderTop:"1.5px solid #e2e8f0"}}>
                       <div style={{fontWeight:700,fontSize:12,color:"#1e3a5f",marginBottom:6}}>🪑 ท่าทางที่ถูกต้อง</div>
                       {g.posture.map((t,i)=>(<div key={i} style={{display:"flex",gap:8,marginBottom:5,alignItems:"flex-start"}}>{dot("#3b82f6")}<span style={{fontSize:12,color:"#334155",lineHeight:1.6}}>{t}</span></div>))}
                       <div style={{fontWeight:700,fontSize:12,color:"#1e3a5f",margin:"10px 0 6px"}}>🧘 การยืดกล้ามเนื้อ (ทำ 3 ครั้ง/วัน)</div>
@@ -673,7 +666,7 @@ export default function BodyMapAssessment() {
                         <a href={g.url} style={{fontSize:11,color:"#2563eb"}}>🔗 ลิงก์</a>
                       </div>
                     </div>
-                  </details>
+                  </div>
                 );
               })}
             </>
@@ -692,7 +685,10 @@ export default function BodyMapAssessment() {
               </div>
             ))}
           </div>
-          <button onClick={()=>setPage("result")} style={{width:"100%",marginTop:16,padding:14,background:"linear-gradient(135deg,#1e3a5f,#0369a1)",color:"white",border:"none",borderRadius:12,fontWeight:700,fontSize:15,cursor:"pointer"}}>← กลับหน้าผลการประเมิน</button>
+          <button onClick={saveToGoogleSheet} disabled={isSaving} style={{width:"100%",marginTop:16,padding:14,background:isSaving?"#6b7280":"linear-gradient(135deg,#16a34a,#15803d)",color:"white",border:"none",borderRadius:12,fontWeight:700,fontSize:15,cursor:isSaving?"not-allowed":"pointer",boxShadow:isSaving?"none":"0 4px 14px rgba(21,128,61,0.35)",transition:"all 0.2s"}}>
+            {isSaving?"⏳ กำลังบันทึก...":"💾 บันทึกผล"}
+          </button>
+          <button onClick={()=>setPage("result")} style={{width:"100%",marginTop:10,padding:14,background:"linear-gradient(135deg,#1e3a5f,#0369a1)",color:"white",border:"none",borderRadius:12,fontWeight:700,fontSize:15,cursor:"pointer"}}>← กลับหน้าผลการประเมิน</button>
         </div>
       </div>
       <p style={{textAlign:"center",color:"#64748b",fontSize:11,marginTop:12}}>อ้างอิง: Kuorinka et al., Applied Ergonomics 18(3), 1987</p>
@@ -714,12 +710,31 @@ export default function BodyMapAssessment() {
       </div>
       <div style={{padding:20}}>
         <div style={{background:"#ffffff",border:"1px solid #000000",borderRadius:1,padding:"10px 14px",marginBottom:12,fontSize:14,color:"#000000"}}>
-          แบบประเมินตนเองเกี่ยวกับความผิดปกติของระบบกล้ามเนื้อและกระดูกใน <br/> 3 เดือนที่ผ่านมา
+          แบบประเมินตนเองเกี่ยวกับความเจ็บปวดของระบบกล้ามเนื้อและกระดูกใน <br/> 3 เดือนที่ผ่านมา
+        </div>
+        <div style={{background:"#f8fafc",border:"1px solid #e2e8f0",borderRadius:10,padding:"12px 14px",marginBottom:12}}>
+          <div style={{fontWeight:700,color:"#1e3a5f",fontSize:12,marginBottom:8}}>📝 เกณฑ์การให้คะแนน</div>
+          <div style={{display:"flex",flexDirection:"column",gap:6}}>
+            {[
+              [0,"#e2e8f0","#475569","ไม่มีอาการ","ไม่รู้สึกถึงอาการเจ็บปวด ไม่มีอาการ"],
+              [2,"#fef08a","#92400e","รู้สึกเจ็บปวดน้อย","รู้สึกถึงอาการเจ็บปวด"],
+              [3,"#fb923c","#7c2d12","รู้สึกเจ็บปวดปานกลาง","รู้สึกเจ็บปวดจนมีผลกระทบกับการทำงาน"],
+              [4,"#ef4444","#7f1d1d","รู้สึกเจ็บปวดมาก","รู้สึกเจ็บปวดมากจนทนไม่ได้ ไม่สามารถทำงานได้ ต้องพบแพทย์"],
+            ].map(([v,bg,tc,label,desc])=>(
+              <div key={v} style={{display:"flex",alignItems:"flex-start",gap:8}}>
+                <div style={{width:13,height:13,borderRadius:"50%",background:bg,border:"1px solid #cbd5e1",flexShrink:0,marginTop:2}}/>
+                <div>
+                  <span style={{fontSize:12,fontWeight:700,color:tc}}>{label}</span>
+                  <span style={{fontSize:11,color:"#64748b"}}> — {desc}</span>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
         <div style={{background:"#eff6ff",border:"1px solid #bfdbfe",borderRadius:10,padding:"10px 14px",marginBottom:12,fontSize:13,color:"#1d4ed8"}}>
           👆 คลิกที่ตัวเลขบนรูปร่างกาย หรือคลิกรายการด้านล่างเพื่อให้คะแนนความเจ็บปวด
         </div>
-        <div style={{position:"relative",background:"#f8fafc",borderRadius:12,padding:8,marginBottom:4}}>
+        <div style={{position:"relative",background:"#f8fafc",borderRadius:12,padding:8,marginBottom:12}}>
           <BodyFigureSVG scores={scores} onSelect={handleSelect} selected={selected}/>
           {selected!==null&&(
             <div style={{position:"absolute",top:10,right:10,background:"white",border:"2px solid #3b82f6",borderRadius:12,padding:12,boxShadow:"0 4px 20px rgba(0,0,0,0.15)",minWidth:186,zIndex:10}}>
@@ -728,14 +743,6 @@ export default function BodyMapAssessment() {
               <button onClick={()=>setSelected(null)} style={{width:"100%",marginTop:8,padding:"4px",background:"#f1f5f9",border:"none",borderRadius:6,fontSize:11,color:"#64748b",cursor:"pointer"}}>ปิด ✕</button>
             </div>
           )}
-        </div>
-        <div style={{display:"flex",justifyContent:"center",gap:14,marginBottom:16,marginTop:4}}>
-          {[[0,"ไม่รู้สึก"],[2,"รู้สึกน้อย"],[3,"รู้สึกปานกลาง"],[4,"รู้สึกมาก"]].map(([v,l])=>(
-            <div key={v} style={{display:"flex",alignItems:"center",gap:4}}>
-              <div style={{width:11,height:11,borderRadius:"50%",background:scaleColors[v],border:"1px solid #cbd5e1"}}/>
-              <span style={{fontSize:11,color:"#64748b"}}>{l}</span>
-            </div>
-          ))}
         </div>
         <div style={{marginBottom:14}}>
           <div style={{display:"flex",justifyContent:"space-between",marginBottom:8}}>
@@ -746,20 +753,18 @@ export default function BodyMapAssessment() {
         </div>
         <div style={{marginBottom:14}}>
           <div style={{display:"flex",justifyContent:"space-between",marginBottom:8}}>
-            <span style={{fontWeight:700,color:"#1e3a5f",fontSize:14}}>🟣 แนวกลาง</span>
-            <span style={{fontSize:12,color:"#64748b"}}>รวม: <strong style={{color:"#8b5cf6"}}>{centerTotal}</strong>/{centerParts.length*3}</span>
-          </div>
-          {centerParts.map(p=><PartRow key={p.id} part={p} scores={scores} setScore={setScore} selected={selected} onSelect={handleSelect}/>)}
-        </div>
-        <div style={{marginBottom:20}}>
-          <div style={{display:"flex",justifyContent:"space-between",marginBottom:8}}>
             <span style={{fontWeight:700,color:"#1e3a5f",fontSize:14}}>🔴 ด้านขวา</span>
             <span style={{fontSize:12,color:"#64748b"}}>รวม: <strong style={{color:"#ec4899"}}>{rightTotal}</strong>/{rightParts.length*3}</span>
           </div>
           {rightParts.map(p=><PartRow key={p.id} part={p} scores={scores} setScore={setScore} selected={selected} onSelect={handleSelect}/>)}
         </div>
-
-        {/* ✅ แก้ไข: เพิ่ม riskLabel ใต้คะแนนในหน้า Form */}
+        <div style={{marginBottom:20}}>
+          <div style={{display:"flex",justifyContent:"space-between",marginBottom:8}}>
+            <span style={{fontWeight:700,color:"#1e3a5f",fontSize:14}}>🟣 แนวกลาง</span>
+            <span style={{fontSize:12,color:"#64748b"}}>รวม: <strong style={{color:"#8b5cf6"}}>{centerTotal}</strong>/{centerParts.length*3}</span>
+          </div>
+          {centerParts.map(p=><PartRow key={p.id} part={p} scores={scores} setScore={setScore} selected={selected} onSelect={handleSelect}/>)}
+        </div>
         <div style={{background:"#f8fafc",borderRadius:12,padding:14,marginBottom:16,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
           <div>
             <div style={{fontSize:12,color:"#64748b"}}>คะแนนรวม</div>
@@ -771,7 +776,6 @@ export default function BodyMapAssessment() {
             <div style={{fontSize:30,fontWeight:900,color:riskColor}}>{affected}<span style={{fontSize:13,color:"#94a3b8"}}>/{bodyParts.length}</span></div>
           </div>
         </div>
-
         <button onClick={()=>setPage("result")} style={{width:"100%",padding:14,background:"linear-gradient(135deg,#1e3a5f,#0369a1)",color:"white",border:"none",borderRadius:12,fontWeight:700,fontSize:15,cursor:"pointer"}}>
           ดูผลการประเมิน 📊
         </button>
